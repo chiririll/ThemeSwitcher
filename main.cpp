@@ -1,4 +1,5 @@
 #include <ctime>
+#include <string>
 #include <iostream>
 #include <Windows.h>
 
@@ -14,6 +15,16 @@ int char_to_int(char* str)
         num += (str[i] - '0') % 10;
     }
     return num;
+}
+
+void switchTheme(bool isDark, string param) {
+    string cmd = "%SystemRoot%\\system32\\WindowsPowerShell\\v1.0\\powershell.exe New-ItemProperty -Path HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize";
+    cmd += " -Name " + param;
+    cmd += " -Value ";
+    cmd += isDark ? '0' : '1';
+    cmd += " -Type Dword -Force";
+    
+    system(&cmd[0]);
 }
 
 int main(int argc, char* argv[]) 
@@ -63,10 +74,8 @@ int main(int argc, char* argv[])
     // Checking minutes
     isDark = isDark || Hour == beg_h && Minute >= beg_m || Hour == end_h && Minute < end_m;
     
-    // cout << Hour << ':' << Minute << " \t" << (isDark ? "Dark" : "Light") << endl;
-    if (isDark)
-        system("%SystemRoot%\\system32\\WindowsPowerShell\\v1.0\\powershell.exe New-ItemProperty -Path HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize -Name AppsUseLightTheme -Value 0 -Type Dword -Force");
-    else
-        system("%SystemRoot%\\system32\\WindowsPowerShell\\v1.0\\powershell.exe New-ItemProperty -Path HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize -Name AppsUseLightTheme -Value 1 -Type Dword -Force");
+    switchTheme(isDark, "AppsUseLightTheme");
+    // switchTheme(isDark, "SystemUsesLightTheme");
+
     return 0;
 }
