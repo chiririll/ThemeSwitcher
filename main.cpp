@@ -17,6 +17,8 @@ int char_to_int(char* str)
 
 int main(int argc, char* argv[]) 
 {
+    ::ShowWindow(::GetConsoleWindow(), SW_HIDE);
+
     int beg_h = 20, beg_m = 0;
     int end_h = 7, end_m = 0;
     
